@@ -11,11 +11,10 @@ export default function IssueTokenForm({ onTokenIssued }) {
 
   // Load counters when component mounts
   useEffect(() => {
-    api.get('/api/admin/counters')
+    api.get('/api/queue/counters/active')
       .then(res => {
-        const active = res.data.filter(c => c.isActive);
-        setCounters(active);
-        if (active.length > 0) setCounterId(active[0].id);
+        setCounters(res.data);
+        if (res.data.length > 0) setCounterId(res.data[0].id);
       })
       .catch(() => setError('Could not load counters'));
   }, []);  // [] = run once on mount, never again

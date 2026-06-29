@@ -22,10 +22,10 @@ export default function LoginPage() {
 
     try {
       const res = await api.post('/api/auth/login', form);
-      const { token, role, name, userId } = res.data;
+      const { token, role, name, userId, counterId } = res.data;
 
       // Save to global auth context
-      login({ name, role, userId }, token);
+      login({ name, role, userId, counterId }, token);
 
       // Redirect based on role
       if (role === 'ADMIN')  navigate('/admin');
@@ -77,6 +77,10 @@ export default function LoginPage() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        <div style={styles.switch}>
+          Don't have an account? <span onClick={() => navigate('/register')} style={styles.link}>Register</span>
+        </div>
       </div>
     </div>
   );
@@ -108,4 +112,10 @@ const styles = {
     background: '#fef2f2', color: '#dc2626', padding: '0.6rem 0.85rem',
     borderRadius: '8px', marginBottom: '1rem', fontSize: '0.875rem',
   },
+  switch: {
+    marginTop: '1.25rem', textAlign: 'center', fontSize: '0.9rem', color: '#64748b'
+  },
+  link: {
+    color: '#3b82f6', cursor: 'pointer', fontWeight: 600, textDecoration: 'underline'
+  }
 };

@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import CustomerPage from './pages/CustomerPage';
 import StaffPage from './pages/StaffPage';
 import AdminPage from './pages/AdminPage';
@@ -11,7 +12,7 @@ import AnalyticsPage from './pages/AnalyticsPage';
 
 export default function App() {
   return (
-    <AuthProvider>          {/* global auth state wraps everything */}
+    <AuthProvider>          {/* Wraps everything in global auth state */}
       <BrowserRouter>
         <Navbar />
         <div style={{ padding: '1rem' }}>
@@ -19,6 +20,7 @@ export default function App() {
 
             {/* Public route — anyone can see */}
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
             {/* Protected — must be logged in */}
             <Route path="/customer" element={

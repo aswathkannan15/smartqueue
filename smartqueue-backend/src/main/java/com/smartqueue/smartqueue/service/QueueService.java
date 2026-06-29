@@ -165,6 +165,12 @@ public class QueueService {
         return auditLogRepository.findByTokenIdOrderByTimestampAsc(tokenId);
     }
 
+    // ── Active counters ───────────────────────────────────────────
+    @Transactional(readOnly = true)
+    public List<Counter> getActiveCounters() {
+        return counterRepository.findByIsActiveTrue();
+    }
+
     // ── Helpers ───────────────────────────────────────────────────
     private Token getToken(Long id) {
         return tokenRepository.findById(id)

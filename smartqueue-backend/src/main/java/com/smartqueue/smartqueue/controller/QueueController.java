@@ -3,11 +3,13 @@ package com.smartqueue.smartqueue.controller;
 
 
 import com.smartqueue.smartqueue.dto.*;
-        import com.smartqueue.smartqueue.service.QueueService;
+import com.smartqueue.smartqueue.entity.Counter;
+import com.smartqueue.smartqueue.service.QueueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/queue")
@@ -32,5 +34,11 @@ public class QueueController {
     @GetMapping("/token/{tokenId}/history")
     public ResponseEntity<?> getHistory(@PathVariable Long tokenId) {
         return ResponseEntity.ok(queueService.getTokenHistory(tokenId));
+    }
+
+    // Active counters
+    @GetMapping("/counters/active")
+    public ResponseEntity<List<Counter>> getActiveCounters() {
+        return ResponseEntity.ok(queueService.getActiveCounters());
     }
 }

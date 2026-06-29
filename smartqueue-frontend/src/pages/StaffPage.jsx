@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import TokenCard from '../components/TokenCard';
@@ -14,12 +14,12 @@ export default function StaffPage() {
   const [loading, setLoading]             = useState(false);
   const [message, setMessage]             = useState('');
 
-  const loadQueue = async () => {
+  const loadQueue = useCallback(async () => {
     const res = await api.get(`/api/queue/status/${counterId}`);
     setWaitingTokens(res.data.waitingTokens || []);
-  };
+  }, [counterId]);
 
-  useEffect(() => { loadQueue(); }, []);
+  useEffect(() => { loadQueue(); }, [loadQueue]);
 
   const flash = (msg) => {
     setMessage(msg);

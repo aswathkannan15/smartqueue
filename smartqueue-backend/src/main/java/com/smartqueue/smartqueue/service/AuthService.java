@@ -44,7 +44,8 @@ public class AuthService {
         userRepository.save(user);
 
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
-        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId());
+        Long counterId = user.getCounter() != null ? user.getCounter().getId() : null;
+        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId(), counterId);
     }
 
     public AuthResponse login(AuthRequest request) {
@@ -58,6 +59,7 @@ public class AuthService {
 
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
-        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId());
+        Long counterId = user.getCounter() != null ? user.getCounter().getId() : null;
+        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId(), counterId);
     }
 }
