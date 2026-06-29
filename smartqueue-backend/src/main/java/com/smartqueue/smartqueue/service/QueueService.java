@@ -38,6 +38,11 @@ public class QueueService {
 
         User issuedBy = getCurrentUser();
 
+        tokenRepository.findActiveTokenByUser(issuedBy.getId())
+                .ifPresent(existingToken -> {
+                    throw new IllegalStateException("You already have an active token: " + existingToken.getTokenNumber());
+                });
+
         Token token = Token.builder()
                 .tokenNumber(tokenNumberGenerator.generate())
                 .priority(request.getPriority())

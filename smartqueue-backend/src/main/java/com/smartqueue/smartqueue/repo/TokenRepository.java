@@ -30,6 +30,15 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     """)
     Optional<Token> findNextToken(@Param("counterId") Long counterId);
 
+    @Query("""
+        SELECT t FROM Token t
+        WHERE t.issuedBy.id = :userId
+          AND t.status IN (com.smartqueue.smartqueue.entity.Token.Status.WAITING, com.smartqueue.smartqueue.entity.Token.Status.CALLED, com.smartqueue.smartqueue.entity.Token.Status.SERVING)
+        ORDER BY t.id DESC
+        LIMIT 1
+    """)
+    Optional<Token> findActiveTokenByUser(@Param("userId") Long userId);
+
     List<Token> findByCounterIdAndStatusOrderByIssuedAtAsc(Long counterId, Status status);
 
     List<Token> findByStatusOrderByPriorityAscIssuedAtAsc(Status status);

@@ -52,7 +52,7 @@ export default function RegisterPage() {
       email: form.email,
       password: form.password,
       role: form.role,
-      counterId: (form.role === 'STAFF' || form.role === 'ADMIN') && form.counterId 
+      counterId: form.role === 'STAFF' && form.counterId 
         ? parseInt(form.counterId, 10) 
         : null
     };
@@ -75,7 +75,7 @@ export default function RegisterPage() {
     }
   };
 
-  const showCounterSelect = form.role === 'STAFF' || form.role === 'ADMIN';
+  const showCounterSelect = form.role === 'STAFF';
 
   return (
     <div style={styles.container}>
