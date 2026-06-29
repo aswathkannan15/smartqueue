@@ -1,6 +1,6 @@
 import { useQueueSocket } from "../hooks/useQueueSocket";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 export default function QueueBoard({ counterId }) {
   const { queueData, connected } = useQueueSocket(counterId);
@@ -8,7 +8,7 @@ export default function QueueBoard({ counterId }) {
 
   // Load initial state via REST on first render
   useEffect(() => {
-    axios.get(`/api/queue/status/${counterId}`)
+    api.get(`/api/queue/status/${counterId}`)
       .then(res => setStatus(res.data));
   }, [counterId]);
 

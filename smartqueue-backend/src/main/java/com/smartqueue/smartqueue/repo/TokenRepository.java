@@ -55,4 +55,61 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
         LIMIT 1
     """)
     Optional<Token> findLastTokenToday();
+
+    // Total tokens today by status
+    @Query("""
+    SELECT t.status, COUNT(t) FROM Token t
+    WHERE DATE(t.issuedAt) = CURRENT_DATE
+    GROUP BY t.status
+""")
+    List<Object[]> countTodayByStatus();
+
+    // Tokens issued per hour today
+    @Query("""
+    SELECT HOUR(t.issuedAt), COUNT(t) FROM Token t
+    WHERE DATE(t.issuedAt) = CURRENT_DATE
+    GROUP BY HOUR(t.issuedAt)
+    ORDER BY HOUR(t.issuedAt)
+""")
+    List<Object[]> countByHourToday();
+
+    // Stats per counter today
+    @Query("""
+    SELECT t.counter.name,
+           SUM(CASE WHEN t.status = 'COMPLETED' THEN 1 ELSE 0 END),
+           SUM(CASE WHEN t.status = 'SKIPPED'   THEN 1 ELSE 0 END),
+           SUM(CASE WHEN t.status = 'WAITING'   THEN 1 ELSE 0 END)
+    FROM Token t
+    WHERE DATE(t.issuedAt) = CURRENT_DATE
+    GROUP BY t.counter.name
+""")
+    List<Object[]> statsByCounterToday();
+
+    // Average wait time (issued → called) in minutes for completed tokens
+    @Query("""
+    SELECT AVG(TIMESTAMPDIFF(MINUTE, t.issuedAt, t.calledAt))
+    FROM Token t
+    WHERE DATE(t.issuedAt) = CURRENT_DATE
+      AND t.calledAt IS NOT NULL
+""")
+    Double avgWaitTimeToday();
+
+    // Tokens by priority today
+    @Query("""
+    SELECT t.priority, COUNT(t) FROM Token t
+    WHERE DATE(t.issuedAt) = CURRENT_DATE
+    GROUP BY t.priority
+""")
+    List<Object[]> countByPriorityToday();
+
+    // Per-counter avg wait time
+    @Query("""
+    SELECT t.counter.name,
+           AVG(TIMESTAMPDIFF(MINUTE, t.issuedAt, t.calledAt))
+    FROM Token t
+    WHERE DATE(t.issuedAt) = CURRENT_DATE
+      AND t.calledAt IS NOT NULL
+    GROUP BY t.counter.name
+""")
+    List<Object[]> avgWaitByCounter();
 }

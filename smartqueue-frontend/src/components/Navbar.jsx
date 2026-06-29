@@ -22,6 +22,9 @@ export default function Navbar() {
             <Link to="/staff" style={styles.link}>Staff</Link>}
           {user.role === 'ADMIN' &&
             <Link to="/admin" style={styles.link}>Admin</Link>}
+            {user.role === 'ADMIN' && (
+            <Link to="/analytics" style={styles.link}>Analytics</Link>
+            )}
 
           <span style={styles.userInfo}>
             👤 {user.name} ({user.role})

@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import CustomerPage from './pages/CustomerPage';
 import StaffPage from './pages/StaffPage';
 import AdminPage from './pages/AdminPage';
+import AnalyticsPage from './pages/AnalyticsPage';
+
 
 export default function App() {
   return (
@@ -41,6 +43,12 @@ export default function App() {
 
             {/* Default redirect */}
             <Route path="/" element={<Navigate to="/login" />} />
+
+            <Route path="/analytics" element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <AnalyticsPage />
+              </ProtectedRoute>
+            }/>
 
           </Routes>
         </div>
