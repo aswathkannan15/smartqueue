@@ -11,8 +11,9 @@ export function useQueueSocket(counterId) {
     // 1. Create the STOMP client
     const client = new Client({
       // SockJS creates the connection to our Spring Boot server
-      webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
-
+      webSocketFactory: () => new SockJS(
+  (process.env.REACT_APP_API_URL || 'http://localhost:8080') + '/ws'
+),
       onConnect: () => {
         setConnected(true);
         console.log("Connected to SmartQueue WebSocket");

@@ -22,8 +22,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")          // clients connect here
-                .setAllowedOrigins("http://localhost:3000")
-                .withSockJS();               // fallback for older browsers
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins(
+                        "http://localhost:3000",
+                        "https://smartqueue-frontend.onrender.com"
+                )
+                .withSockJS();
     }
 }
